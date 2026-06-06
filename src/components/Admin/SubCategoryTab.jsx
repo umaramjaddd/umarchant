@@ -138,9 +138,20 @@ export default function SubCategoryTab() {
                     <button onClick={() => handleEdit(sub)} className="text-zinc-400 hover:text-amber-500">
                       <Icon icon="ri:edit-2-line" width="20" />
                     </button>
-                    <button onClick={() => deleteSubCategory(sub.id).then(() => dispatch(fetchSubCategories()))} className="text-zinc-400 hover:text-red-500">
+         
+<button 
+  onClick={() => {
+    if (window.confirm(`Are you sure you want to delete "${sub.name}"?`)) {
+      deleteSubCategory(sub.id).then(() => dispatch(fetchSubCategories()));
+    }
+  }} 
+  className="text-zinc-400 hover:text-red-500"
+>
+  <Icon icon="ri:delete-bin-line" width="20" />
+</button>
+                    {/* <button onClick={() => deleteSubCategory(sub.id).then(() => dispatch(fetchSubCategories()))} className="text-zinc-400 hover:text-red-500">
                       <Icon icon="ri:delete-bin-line" width="20" />
-                    </button>
+                    </button> */}
                   </div>
                 </td>
               </tr>

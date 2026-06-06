@@ -1,8 +1,9 @@
 import { Cinzel, Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Foooter";
+import Footer from "@/components/Footer";
 import ReduxProvider from "../Redux/ReduxProvider";
+
 
 const cinzel = Cinzel({
   subsets: ["latin"],

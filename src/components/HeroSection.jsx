@@ -1,5 +1,6 @@
 // src/components/HeroSection.jsx
 import Link from "next/link"
+import { appName } from "@/constants/appName."
 
 export default function HeroSection() {
   return (
@@ -15,14 +16,13 @@ export default function HeroSection() {
       <div className="absolute inset-0 bg-black/40"></div>
 
       {/* Hero Content with Glassmorphism */}
-      <div className="relative z-10 text-center px-8 py-12 md:py-16 max-w-3xl mx-4 
-                      backdrop-blur-md bg-white/10 border border-white/20 rounded-sm shadow-2xl">
+      <div className="relative z-10 text-center px-8 py-12 md:py-16 max-w-3xl mx-4 backdrop-blur-md bg-white/10 border border-white/20 rounded-sm shadow-2xl">
         
         {/* Decorative Top Accent */}
         <div className="w-12 h-[1px] bg-amber-500 mx-auto mb-6"></div>
 
         <h1 className="font-serif text-5xl md:text-7xl text-white mb-6 tracking-tight">
-          Arshad Armoury
+          {appName}
         </h1>
         
         <p className="text-zinc-200 text-lg md:text-xl mb-10 font-light tracking-wide italic">
@@ -30,18 +30,22 @@ export default function HeroSection() {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link href="https://wa.me/923080903030" target="_blank">
-            <button className="px-10 py-4 bg-amber-700 text-white font-bold tracking-widest uppercase text-xs
-                             hover:bg-amber-600 transition-all duration-300 transform hover:-translate-y-1 shadow-lg">
-              Contact Us
-            </button>
+          {/* Styled as a button directly - no nested <button> tag needed */}
+          <Link 
+            href="https://wa.me/923080903030" 
+            target="_blank"
+            className="px-10 py-4 bg-amber-700 text-white font-bold tracking-widest uppercase text-xs text-center
+                       hover:bg-amber-600 transition-all duration-300 transform hover:-translate-y-1 shadow-lg inline-block"
+          >
+            Contact Us
           </Link>
           
-          <Link href="/products">
-            <button className="px-10 py-4 border border-white text-white font-bold tracking-widest uppercase text-xs
-                             hover:bg-white hover:text-zinc-900 transition-all duration-300">
-              View Collection
-            </button>
+          <Link 
+            href="/products"
+            className="px-10 py-4 border border-white text-white font-bold tracking-widest uppercase text-xs text-center
+                       hover:bg-white hover:text-zinc-900 transition-all duration-300 inline-block"
+          >
+            View Collection
           </Link>
         </div>
       </div>

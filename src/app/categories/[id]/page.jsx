@@ -1,41 +1,66 @@
-// src/app/categories/[id]/page.jsx
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProducts, fetchSubCategories } from "@/redux/Slices/productsSlice";
 import { useParams, useSearchParams } from "next/navigation"
-import { subCategories } from "@/constants/subcategories"
-import { products } from "@/constants/products"
 import ProductCard from "@/components/ProductCard"
 
 export default function CategoryPage() {
+  const dispatch = useDispatch();
+  
+  // Access data from Redux instead of local constants
+  const { products, subCategories, loading } = useSelector((state) => state.products);
+  console.log(subCategories);
+  useEffect(() => {
+    dispatch(fetchProducts());
+    dispatch(fetchSubCategories());
+  }, [dispatch]);
   const params = useParams()
   const searchParams = useSearchParams()
   const categoryId = Number(params.id)
   const querySub = Number(searchParams.get("sub"))
 
+  console.log(subCategories);
+  
+ 
+  
   const filteredSubCategories = subCategories.filter(
-    (sub) => sub.categoryId === categoryId
+    (sub) => sub.category_id === categoryId
   )
 
-  // Sync state with URL query if available
   const [selectedSub, setSelectedSub] = useState(
     querySub || filteredSubCategories[0]?.id || null
   )
 
+
+    // FIX: Sync selectedSub when data finished loading
+  useEffect(() => {
+    if (!selectedSub && filteredSubCategories.length > 0) {
+      setSelectedSub(filteredSubCategories[0].id)
+    }
+  }, [filteredSubCategories, selectedSub])
+
+
   const filteredProducts = products.filter(
-    (p) => p.subCategoryId === selectedSub
+    (p) => p.sub_category_id === selectedSub
   )
 
-  if (!filteredSubCategories.length)
-    return (
-      <div className="h-[60vh] flex items-center justify-center">
-        <p className="text-zinc-500 font-serif italic tracking-widest uppercase">Archive Empty</p>
-      </div>
-    )
+
+  // const filteredProducts = products;
+
+ console.log("filtered products:", filteredProducts);
+
+
+  if (!filteredSubCategories.length) return (
+    <div className="h-[60vh] flex items-center justify-center">
+      <p className="text-zinc-500 font-serif italic tracking-widest uppercase">Archive Empty</p>
+    </div>
+  )
 
   return (
     <main className="px-6 py-20 max-w-7xl mx-auto min-h-screen">
-      {/* Header Section */}
       <div className="mb-16 border-b border-zinc-100 pb-8">
         <span className="text-amber-700 text-xs uppercase tracking-[0.4em] font-bold mb-2 block">
           Curated Collection
@@ -44,9 +69,7 @@ export default function CategoryPage() {
           Masterpieces
         </h1>
       </div>
-
       <div className="flex flex-col lg:flex-row gap-12">
-        {/* Left Sidebar: Subcategory Navigation */}
         <aside className="w-full lg:w-64 shrink-0">
           <h3 className="text-[10px] uppercase tracking-[0.3em] text-zinc-400 font-bold mb-6">
             Filter by Specialty
@@ -56,12 +79,12 @@ export default function CategoryPage() {
               <button
                 key={sub.id}
                 onClick={() => setSelectedSub(sub.id)}
-                className={`text-left text-sm uppercase tracking-widest transition-all duration-300 relative py-1
-                  ${selectedSub === sub.id 
+                className={`text-left text-sm uppercase tracking-widest transition-all duration-300 relative py-1 ${
+                  selectedSub === sub.id 
                     ? "text-amber-700 font-bold pl-4" 
-                    : "text-zinc-500 hover:text-zinc-900 pl-0"}`}
+                    : "text-zinc-500 hover:text-zinc-900 pl-0"
+                }`}
               >
-                {/* Visual indicator for active item */}
                 {selectedSub === sub.id && (
                   <span className="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-[1px] bg-amber-700"></span>
                 )}
@@ -70,8 +93,6 @@ export default function CategoryPage() {
             ))}
           </div>
         </aside>
-
-        {/* Right Content: Product Grid */}
         <div className="flex-1">
           {filteredProducts.length === 0 ? (
             <div className="bg-zinc-50 border border-dashed border-zinc-200 py-20 text-center rounded-sm">

@@ -1,9 +1,8 @@
-// src/app/productView/[id]/page.jsx
 "use client";
 
 import { useParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchProducts } from "@/Redux/Slices/productsSlice";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
@@ -12,8 +11,24 @@ export default function ProductViewPage() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { products, loading } = useSelector((state) => state.products);
+  
+  // State to keep track of the currently selected preview image
+  const [activeImage, setActiveImage] = useState(null);
 
   const product = products.find((p) => p.id === Number(id));
+
+  // 1. Safely construct the unified image array: thumbnail first, followed by any additional images
+  const imageList = product 
+    ? [product.thumbnail, ...(product.images || [])].filter(Boolean) 
+    : [];
+
+  // Initialize or update the active image when the product changes/loads
+  useEffect(() => {
+    if (imageList.length > 0) {
+      // Automatically default to the first image in the list (which is the thumbnail)
+      setActiveImage(imageList[0]);
+    }
+  }, [product]);
 
   useEffect(() => {
     if (products.length === 0) {
@@ -38,24 +53,54 @@ export default function ProductViewPage() {
 
   return (
     <main className="min-h-screen bg-zinc-950 text-white pt-10 pb-20 px-6">
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 items-start">
+      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 items-stretch">
         
-        {/* Left: Product Showcase Image */}
-        <div className="w-full lg:w-3/5 relative group">
-          <div className="absolute -inset-1 bg-amber-600/20 blur opacity-25 group-hover:opacity-40 transition duration-1000"></div>
-          <div className="relative aspect-[4/5] md:aspect-video lg:aspect-[4/5] overflow-hidden bg-zinc-900 border border-white/5">
-            <img
-              src={product.thumbnail}
-              alt={product.name}
-              className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-            />
+        {/* Left: Product Showcase & Image Gallery */}
+        <div className="w-full lg:w-3/5 flex flex-col gap-4">
+          
+          {/* Main Showcase Image */}
+          <div className="relative group w-full">
+            <div className="absolute -inset-1 bg-amber-600/20 blur opacity-25 group-hover:opacity-40 transition duration-1000"></div>
+            <div className="relative w-full h-[60vh] lg:h-[80vh] overflow-hidden bg-zinc-900 border border-white/5">
+              <img
+                src={activeImage || product.thumbnail}
+                alt={product.name}
+                className="w-full h-full object-contain transition-transform duration-1000 group-hover:scale-105"
+              />
+            </div>
+            {/* Decorative Corner */}
+            <div className="absolute top-0 left-0 w-16 h-16 border-t border-l border-amber-600/30"></div>
           </div>
-          {/* Decorative Corner */}
-          <div className="absolute top-0 left-0 w-16 h-16 border-t border-l border-amber-600/30"></div>
+
+          {/* Responsive Map Thumbnail Gallery */}
+          {imageList.length > 1 && (
+            <div className="grid grid-cols-4 md:grid-cols-5 gap-3 pt-2">
+              {imageList.map((imgUrl, index) => {
+                const isActive = activeImage === imgUrl;
+                return (
+                  <button
+                    key={index}
+                    onClick={() => setActiveImage(imgUrl)}
+                    className={`relative aspect-square overflow-hidden bg-zinc-900 border transition-all duration-300 ${
+                      isActive 
+                        ? "border-amber-600 opacity-100 scale-[0.98]" 
+                        : "border-white/5 opacity-50 hover:opacity-80"
+                    }`}
+                  >
+                    <img 
+                      src={imgUrl} 
+                      alt={`${product.name} view ${index + 1}`} 
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* Right: Product Details & Acquisition */}
-        <div className="w-full lg:w-2/5 sticky top-32">
+        <div className="w-full lg:w-2/5 lg:min-h-[80vh] flex flex-col justify-between sticky top-20">
           <div className="mb-8">
             <span className="text-amber-600 text-[10px] uppercase tracking-[0.5em] font-bold">
               {product.material || "Handcrafted Edition"}
@@ -97,14 +142,14 @@ export default function ProductViewPage() {
           </div>
 
           {/* Authentic Details Box */}
-          {/* <div className="mt-12 p-6 border border-zinc-800 bg-zinc-900/20 backdrop-blur-sm">
+          <div className="mt-12 p-6 border border-zinc-800 bg-zinc-900/20 backdrop-blur-sm">
             <h4 className="text-[10px] uppercase tracking-widest text-amber-600 font-bold mb-4">Craftsmanship Guarantee</h4>
             <ul className="space-y-3 text-[11px] text-zinc-500 tracking-wide uppercase">
               <li className="flex items-center gap-3"><Icon icon="ri:shield-check-line" className="text-amber-700" /> 100% Sialkot Forged Leather</li>
               <li className="flex items-center gap-3"><Icon icon="ri:hammer-line" className="text-amber-700" /> Lifetime Maintenance Support</li>
               <li className="flex items-center gap-3"><Icon icon="ri:truck-line" className="text-amber-700" /> Secure Insured Shipping</li>
             </ul>
-          </div> */}
+          </div>
         </div>
 
       </div>

@@ -1,5 +1,6 @@
 // src/components/AboutSection.jsx
 import Image from "next/image"
+import { appName } from "@/constants/appName."
 
 export default function AboutSection() {
   return (
@@ -27,7 +28,7 @@ export default function AboutSection() {
           </h2>
           <div className="space-y-6 text-zinc-600 leading-relaxed font-light text-lg">
             <p>
-              Arshad Armoury is dedicated to crafting premium leather goods and armour that combine tradition, craftsmanship, and style. Every piece is meticulously designed and handmade to ensure durability and elegance.
+              {appName} is dedicated to crafting premium leather goods and armour that combine tradition, craftsmanship, and style. Every piece is meticulously designed and handmade to ensure durability and elegance.
             </p>
             <p>
               Our mission is to preserve the art of fine leatherwork and armour making while delivering products that our customers can cherish for years to come.

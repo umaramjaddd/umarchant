@@ -6,8 +6,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Icon } from "@iconify/react";
-import { Menu, X, ShoppingBag } from "lucide-react";
-import { apppName } from "@/constants/appName.";
+import { Menu, X} from "lucide-react";
+import { appName } from "@/constants/appName.";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -41,7 +41,7 @@ export default function Navbar() {
             <div className="relative w-12 h-12">
               <Image src="/logo.png" alt="Logo" fill className="object-contain transition-all"/>
             </div>
-            <h1 className="font-serif text-xl tracking-[0.2em] ml-3 uppercase">{apppName}</h1>
+            <h1 className="font-serif text-xl tracking-[0.2em] ml-3 uppercase">{appName}</h1>
           </Link>
 
           <nav className="flex items-center space-x-10">
@@ -72,7 +72,7 @@ export default function Navbar() {
             <div className="relative w-10 h-10">
               <Image src="/logo.png" alt="Logo" fill className="object-contain" />
             </div>
-            <h1 className="font-serif text-sm tracking-widest ml-2 uppercase">{apppName}</h1>
+            <h1 className="font-serif text-sm tracking-widest ml-2 uppercase">{appName}</h1>
           </Link>
 
           <button onClick={() => setMenuOpen(!menuOpen)} className="p-2">
