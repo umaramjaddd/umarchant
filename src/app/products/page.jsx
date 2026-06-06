@@ -31,7 +31,7 @@ export default function Products() {
   return (
     
 
-    <div className="flex flex-col px-3 gap-8 max-w-7xl w-full self-center">
+    <div className="flex flex-col px-3 gap-8 max-w-7xl w-full self-center bg-white">
            
             <AllProducts title="Full Archive" showAll="yes" />
             </div>

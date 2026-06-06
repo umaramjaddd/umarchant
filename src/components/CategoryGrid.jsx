@@ -16,7 +16,7 @@ export default function CategoryGrid() {
     );
 
   return (
-    <section className="py-12">
+    <section className="py-12 ">
       <div className="text-center mb-12">
         <h2 className="font-serif text-3xl md:text-4xl text-zinc-900">Featured Collections</h2>
         <div className="w-16 h-[2px] bg-amber-700 mx-auto mt-4"></div>

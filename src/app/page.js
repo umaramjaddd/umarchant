@@ -35,9 +35,9 @@ export default function HomePage() {
       dispatch(fetchProducts());
     }
   }, [dispatch, categories.length, products.length]);
-
+ 
   return (
-    <main className="flex flex-col">
+    <main className="flex flex-col bg-white">
       <HeroSection />
       <div className="flex flex-col px-3 gap-8 max-w-7xl w-full self-center">
         <CategoryGrid />

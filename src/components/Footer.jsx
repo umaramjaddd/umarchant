@@ -135,7 +135,7 @@ export default function Footer() {
           © {new Date().getFullYear()} Arshad Armoury — Forged in Steel. Bound by Legacy.
         </p>
         <div className="flex gap-6 text-[10px] uppercase tracking-widest text-zinc-600">
-          <Link href="/privacy" className="hover:text-zinc-300 transition">Privacy Policy</Link>
+          <Link href="/privacypolicy" className="hover:text-zinc-300 transition">Privacy Policy</Link>
           <Link href="/terms" className="hover:text-zinc-300 transition">Terms of Service</Link>
         </div>
       </div>
