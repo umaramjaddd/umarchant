@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts, fetchSubCategories } from "@/redux/Slices/productsSlice";
+import { fetchProducts, fetchSubCategories } from "@/Redux/Slices/productsSlice";
 import { useParams, useSearchParams } from "next/navigation"
 import ProductCard from "@/components/ProductCard"
 
